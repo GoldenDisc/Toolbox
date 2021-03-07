@@ -129,7 +129,7 @@ class binaryNode():
         self.right = right
 
 
-class binaryTree():    # Fix bug where 'None' becomes the value of a node rather than an empty space.
+class binaryTree():
 
     def __init__(self, treeArr, index=0, isRoot=True):
 
@@ -143,6 +143,10 @@ class binaryTree():    # Fix bug where 'None' becomes the value of a node rather
         else:
 
             try:
+
+                if treeArr[index] == None:
+                    return None
+
                 current_node = binaryNode(treeArr[index])
 
                 current_node.left = self.__init__(treeArr, index * 2, False)
@@ -240,6 +244,11 @@ def convertToLinkedList(arr):
 
 
 def convertToTree(arr, direction='left'):
+
+    direction = direction.lower()
+
+    if direction != "left" and direction != "right":
+        raise Exception("The direction given to the 'convertToTree' function must be either 'left' or 'right.' ")
     
     index = 1
     treeList = [None, ]
@@ -257,17 +266,9 @@ def convertToTree(arr, direction='left'):
 
     for num in range(1, (list(treeDict)[-1] + 1)):
 
-
         try:
            treeList.append(treeDict[num]) 
         except KeyError:
             treeList.append(None)
 
     return binaryTree(treeList)
-        
-
-test_list = ["root", "left", "left2", "left3", "left4", "left5"]
-
-tree = convertToTree(test_list)
-
-print(tree.root.right)
