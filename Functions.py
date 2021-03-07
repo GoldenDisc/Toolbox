@@ -46,3 +46,4 @@ def binarySearch(group, value):
       right = mid - 1
 
   return -1
+  

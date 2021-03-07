@@ -129,22 +129,45 @@ class binaryNode():
         self.right = right
 
 
-def treeCreator(arr):
+class binaryTree():    # Fix bug where 'None' becomes the value of a node rather than an empty space.
 
-    if len(arr) == 0:
-        return None
-            
-    currentNode = binaryNode(arr[0])
+    def __init__(self, treeArr, index=0, isRoot=True):
 
-    currentNode.left = treeCreator(arr[1])
-    currentNode.right = treeCreator(arr[2])
+        if isRoot:
 
-    return currentNode
+            self.root = binaryNode(treeArr[1])
+
+            self.root.left = self.__init__(treeArr, 2, False)
+            self.root.right = self.__init__(treeArr, 3, False)
+
+        else:
+
+            try:
+                current_node = binaryNode(treeArr[index])
+
+                current_node.left = self.__init__(treeArr, index * 2, False)
+                current_node.right = self.__init__(treeArr, index * 2 + 1, False)
+
+                return current_node
+
+            except IndexError:
+                return None
 
 
 def treeSum(node):
-    """Intakes a binary node, returns the sum of that node and all subsequent nodes as an integer. Raises an error if the provided node either isn't a binary node 
-    or doesn't hold an integer value."""
+    """
+    Takes the sum of a section of a binary tree containing only floats and integers.
+
+    Arguments:
+        node (binaryNode): The root head of the branch to be counted. The sum of this node and all subsequent nodes will be taken.
+
+    Returns:
+        float: The sum of every node on the given section of the tree.
+
+    Raises:
+        Exception: A custom exception is raised if any of the nodes of the given section of the tree cotain anything other than a 
+            float or integer.
+    """
 
     if not isinstance(node, binaryNode):
         raise Exception("The node given to the 'treeSum' function must be a binaryNode object.")
@@ -163,20 +186,40 @@ def treeSum(node):
 
 
 def addBinaryNode(parent, direction, value):
-    """Intakes a node, a directional string ('left' or 'right,') and a value. Replaces the given parent node's left or right child node with a node of the given value.
-    This function is designed to be used to add leaf nodes, but can be used to replace entire branches of nodes. Note that the new child node has no children of its own, 
-    and that if the new node is replacing another, the children of the old node will no longer be connected to the tree."""
+    """
+    Adds or replaces a binary node on a binary tree.
+
+    Arguments:
+        parent (binaryNode): The node of a binary tree that will have one of its child nodes replaced.
+
+        direction (str): Either 'left' or 'right,' determines which of the parent's nodes is replaced. 
+
+        value (no designated type): Can be of any data type. Whatever data is added will be held in a 'binaryNode' object and 
+            replaces the given parent node's left or right child node. This is with the exception that the given value is either a
+            'Node' or 'binaryNode' object, in which case the value of the object will be copied over to form a new object, rather 
+            than the object itself.
+
+    Raises:
+        Exception: A custom exception is rasied if the 'direction' argument given isn't a string containing the words 'left' or 'right.'
+
+    Notes:
+        This function is written for the purpose of adding leaf nodes to trees, in which case the node being replaced by this function
+            would simply be the value 'None' rather than a node object. Keep in mind that this function can overwrite a parent node's 
+            children, and will not maintain further relationships in such cases. This does, however, add the extra functionality of 
+            easily removing entire branches from a tree if a specific node is replaced.
+    """
+
+    direction = direction.lower()
 
     if direction != "left" and direction != "right":
-        raise Exception("The direction given to the 'addBinaryNode' function must be either 'left' or 'right,' given all lowercase as typed here.")
+        raise Exception("The direction given to the 'addBinaryNode' function must be either 'left' or 'right.' ")
 
-
-    if isinstance(value, binaryNode):
+    elif isinstance(value, Node) or isinstance(value, binaryNode):
 
         if direction == "left":
-            parent.left = value
+            parent.left = binaryNode(value.value)
         else:
-            parent.right = value
+            parent.right = binaryNode(value.value)
 
     else:
 
@@ -196,55 +239,35 @@ def convertToLinkedList(arr):
     return linkedList(treeValues)
 
 
-def convertToTree(arr, dir=2):
-    """
-    Converts an array into a binary tree.
-
-    Arguments:
-        arr (list): The array to be converted into a binary tree.
-
-        dir (int, optional): represents the direction each node holdng each given value will be placed. 1 represents left, 2 represents right.
-            Every value in the list will have the value after it placed as either its left or right node, the given integer determines which.
-
-    Returns:
-        binaryTree: the binary tree version of the given array.
-    """
-
-    if isinstance(arr, linkedList):
-
-        node = arr.head
-        linked_values = []
-
-        while node != None:
-            linked_values.append(node.value)
-
-            node = node.next
-
-        arr = linked_values
-
-    treeList = [arr[0], [], []]
-    tempList = treeList[dir]
-
-    for item in arr[1:]:
-        
-        tempList.append(item)
-
-        tempList.append([])
-        tempList.append([])
-
-        tempList = tempList[dir]
-
-    print(treeList)
-    return binaryTree(treeList)
+def convertToTree(arr, direction='left'):
     
+    index = 1
+    treeList = [None, ]
+    treeDict = {}
 
-class binaryTree():
+    for value in arr:
 
-    def __init__(self, treeArray):
+        treeDict[index] = value
 
-        self.root = Node(treeArray[0])
+        if direction == "left":
+            index = index * 2
 
-        self.root.left = treeCreator(treeArray[1])
-        self.root.right = treeCreator(treeArray[2])
+        elif direction == "right":
+            index = index * 2 + 1
 
-print(convertToTree.__doc__)
+    for num in range(1, (list(treeDict)[-1] + 1)):
+
+
+        try:
+           treeList.append(treeDict[num]) 
+        except KeyError:
+            treeList.append(None)
+
+    return binaryTree(treeList)
+        
+
+test_list = ["root", "left", "left2", "left3", "left4", "left5"]
+
+tree = convertToTree(test_list)
+
+print(tree.root.right)
