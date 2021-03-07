@@ -2,7 +2,16 @@
 # Linked Lists
 
 class Node():
-    """ """
+    """ 
+    Holds a value and references to 2 other objects. Specifically created for linked lists.
+
+    Arguments:
+        value (no designated type): Can hold any date type, is the data held by the node.
+
+        next (Node): A reference to another 'Node' object, designed for the next entry in a linked list. Can be set to a None object of no such object exists.
+
+        back (Node): Identical to the 'next' argument, but used to designate the previous object in a linked list.
+    """
 
     def __init__(self, value, next=None, back=None):
 
@@ -13,13 +22,23 @@ class Node():
 
 
 class linkedList():
+    """
+    Creates relationships between 'Node' objects to form a linked list, designates instance specific 'head' and 'rear' nodes.
+
+    Arguments:
+        valueList (list): A list of any number and type of values which will be converted into a linked list, order will be preserved.
+    """
 
     def __init__(self, valueList):
 
         nodeList = []
 
         for item in valueList:
-            nodeList.append(Node(item))
+
+            if isinstance(item, Node):
+                nodeList.append(item)
+            else:
+                nodeList.append(Node(item))
 
         for index, node in enumerate(nodeList):
 
@@ -35,11 +54,31 @@ class linkedList():
 
     
     def addNode(self, value):
+        """
+        Adds a value to the end of a linked list.
+
+        Arguments:
+            self (linkedList): As this is a class method, a specified linked list is required.
+
+            value (no designated type): The value to be added to the end of the linked list.
+        """
         self.rear.next = Node(value)
         self.rear = self.rear.next
 
     
     def removeNode(self, value):
+        """
+        Removes the first node in a linked list of a designated value.
+
+        Arguments:
+            self (linkedList): As this is a class method, a specified linked list is required.
+
+            value (no designated type): The value to be removed from the linked list.
+
+        Notes:
+            This method uses so many conditional statements because of the relationships which must be preserved in a linked list. There's
+            almost certainly a better way to write this, but I don't know what it is.
+        """
         
         node = self.head
 
@@ -73,6 +112,19 @@ class linkedList():
 
 
     def removeAllNodes(self, value):
+        """
+        Removes all nodes of a designated value from a given linked list.
+
+        Arguments:
+            self (linkedList): As this is a class method, a specified linked list is required.
+
+            value (no designated type): The value to be removed from the linked list.
+
+        Notes:
+            As stated in the 'removeNode' method's docstring, there's almost certainly a better way to remove nodes from a linked list while correcting the 
+            relationships between nodes, but I don't know what that is. Yes, I am very lazy.
+
+        """
         
         node = self.head
 
@@ -105,6 +157,16 @@ class linkedList():
 
 
 def countNodes(node):
+    """
+    Returns the number of nodes starting from a specified node to the end of that specific linked list. Does not required a linked list object, can be used on specifc sections
+    of a linked list if desired.
+
+    Arguments:
+        node (Node): The node the function will begin counting from. Is included in the number of nodes counted.
+
+    Returns:
+        int: The number of nodes counted.
+    """
 
     count = 0
 
@@ -120,6 +182,20 @@ def countNodes(node):
 # Binary Trees 
 
 class binaryNode():
+    """
+    Very similar to a 'Node' object, but specifically created for binary trees. Holds a value and references to 2 other objects.
+
+    Arguments:
+        value (no designated type): Can hold any date type, is the data held by the node.
+
+        left (binaryNode): A refernce to another 'binaryNode' object, can be set to a None object if there is no such node to refer to.
+
+        right (binaryNode): Identical to the 'left' argument, with the exception that it refers to a seperate node than 'left.'
+        
+    Notes:
+        As stated in the description, this class is nearly identical to the 'Node' object used for linked lists, with the exception that it's used for binary trees rather
+        than linked lists.
+    """
 
     def __init__(self, value, left=None, right=None):
 
@@ -130,15 +206,44 @@ class binaryNode():
 
 
 class binaryTree():
+    """
+    Creates the relationships between 'binaryNode' objects used to form a binary tree. Similar to the 'linkedList' class, but with greater complexity.
 
-    def __init__(self, treeArr, index=0, isRoot=True):
+    RECURSIVE
 
-        if isRoot:
+    Arguments:
+        treeArr (list): A list of values specifically formatted for the creation of a binary tree. Check the 'Notes' section of this docstring for details.
+
+        index (int): The index in the 'treeArr' list currently being anaylzed by the initalizer for the purpose of converting the stored data into a 'binaryNode'
+            object. The funtion will act as though the index being analyzed will become the root node if set to 0.
+
+    Notes:
+        The required formatting of the 'treeArr' argument mentioned above is specifically used to store binary tree data as a list. This formatting can be seen below:
+
+        [None, root, left, right, left.left, left.right, right.left, right.right]
+          0     1      2     3       4           5          6             7
+
+        This is a short example of the required format. Due to the way the list is formatted, the 0th index is occupied by a None object.
+
+        The value of the root node sits at index 1. From there, every node's left node is equal to its index multiplied by 2, while its right node is equal to its index
+        multiplied by 2 plus 1.
+
+        left, i * 2
+        right, i * 2 + 1
+
+        This concept explained in greater detail can be found in this video: https://www.youtube.com/watch?v=4nJZhcD0wRA&ab_channel=CppNuts
+
+        THIS VIDEO IS NOT MINE, show the creator some support
+    """
+
+    def __init__(self, treeArr, index=0):
+
+        if index == 0:
 
             self.root = binaryNode(treeArr[1])
 
-            self.root.left = self.__init__(treeArr, 2, False)
-            self.root.right = self.__init__(treeArr, 3, False)
+            self.root.left = self.__init__(treeArr, 2)
+            self.root.right = self.__init__(treeArr, 3)
 
         else:
 
@@ -149,8 +254,8 @@ class binaryTree():
 
                 current_node = binaryNode(treeArr[index])
 
-                current_node.left = self.__init__(treeArr, index * 2, False)
-                current_node.right = self.__init__(treeArr, index * 2 + 1, False)
+                current_node.left = self.__init__(treeArr, index * 2)
+                current_node.right = self.__init__(treeArr, index * 2 + 1)
 
                 return current_node
 
@@ -161,6 +266,8 @@ class binaryTree():
 def treeSum(node):
     """
     Takes the sum of a section of a binary tree containing only floats and integers.
+
+    RECURSIVE
 
     Arguments:
         node (binaryNode): The root head of the branch to be counted. The sum of this node and all subsequent nodes will be taken.
@@ -208,9 +315,9 @@ def addBinaryNode(parent, direction, value):
 
     Notes:
         This function is written for the purpose of adding leaf nodes to trees, in which case the node being replaced by this function
-            would simply be the value 'None' rather than a node object. Keep in mind that this function can overwrite a parent node's 
-            children, and will not maintain further relationships in such cases. This does, however, add the extra functionality of 
-            easily removing entire branches from a tree if a specific node is replaced.
+        would simply be the value 'None' rather than a node object. Keep in mind that this function can overwrite a parent node's 
+        children, and will not maintain further relationships in such cases. This does, however, add the extra functionality of 
+        easily removing entire branches from a tree if a specific node is replaced.
     """
 
     direction = direction.lower()
@@ -234,6 +341,15 @@ def addBinaryNode(parent, direction, value):
 
 
 def convertToLinkedList(arr):
+    """
+    Converts a list of 'binaryNode' objects into a linked list.
+
+    Arguments:
+        arr (list): The array of 'binaryNode' objects to be converted into a linkedList object. Order is preserved.
+
+    Returns:
+        linkedList: The newly converted linked list.
+    """
 
     arrValues = []
 
@@ -244,6 +360,25 @@ def convertToLinkedList(arr):
 
 
 def convertToTree(arr, direction='left'):
+    """
+    Converts a list of values into the format referenced in the 'binaryTree' docstring, then creates a binary tree using it.
+
+    Arguments:
+        arr (list): The list of values to be formatted.
+
+        direction (str, optional): Specifices whether the produced tree will be formatted with each value being created in a chain of left or right nodes. Explained in greater
+            detail in the 'Notes' section below.
+
+    Returns:
+        binaryTree: The binary tree produced using the newly formatted list.
+
+    Raises:
+        Exception: A custom exception is rasied if the 'direction' argument given isn't a string containing the words 'left' or 'right.'
+
+    Notes:
+        Based on the 'direction' string given, each value will automatically become the value before its either left or right child node. Note that this is 
+        the only way trees created using this function will be formatted, and that trees formatted with more complexity must be created by hand. Sorry.
+    """
 
     direction = direction.lower()
 
