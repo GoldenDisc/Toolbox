@@ -13,7 +13,7 @@ class stack:
             self.topValue = arr[-1]
 
 
-    def addToStack(self, value):
+    def pushToStack(self, value):
 
         self.info.append(value)
         self.counter += 1
@@ -21,7 +21,7 @@ class stack:
         self.topValue = self.info[self.counter]
 
 
-    def removeFromStack(self):
+    def popStack(self):
 
         self.info.pop()
         self.counter -= 1
