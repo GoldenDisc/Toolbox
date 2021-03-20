@@ -1,29 +1,29 @@
 
 class stack:
 
-    counter = -1
-
     def __init__(self, arr=[]):
 
-        self.info = arr
+        self.arr = arr
+        self.counter = len(arr) - 1
 
         if len(arr) > 0:
-
-            self.counter = len(arr) - 1
             self.topValue = arr[-1]
+        
+        else:
+            self.topValue = None
 
 
-    def pushToStack(self, value):
+    def addStack(self, value):
 
-        self.info.append(value)
         self.counter += 1
+        self.arr.append(value)
 
-        self.topValue = self.info[self.counter]
+        self.topValue = self.arr[self.counter]
 
 
-    def popStack(self):
+    def removeStack(self):
 
-        self.info.pop()
         self.counter -= 1
+        self.arr.pop()
 
-        self.topValue = self.info[self.counter]
+        self.topValue = self.arr[self.counter]
