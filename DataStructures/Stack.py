@@ -27,3 +27,23 @@ class stack:
         self.arr.pop()
 
         self.topValue = self.arr[self.counter]
+
+
+    def __iter__(self):
+        return self
+
+    
+    def __next__(self):
+        if self.counter == -1:
+            raise StopIteration
+        
+        current = self.topValue
+        self.removeStack()
+
+        return current
+
+
+test_stack = stack(["BLAST OFF!", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+for value in test_stack:
+    print(f"Value: {value}, Length: {test_stack.counter}")
