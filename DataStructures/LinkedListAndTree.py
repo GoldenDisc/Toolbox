@@ -5,7 +5,7 @@ class Node():
     """ 
     Holds a value and references to 2 other objects. Specifically created for linked lists.
 
-    Arguments:
+    Attributes:
         value (no designated type): Can hold any date type, is the data held by the node.
 
         next (Node): A reference to another 'Node' object, designed for the next entry in a linked list. Can be set to a None object of no such object exists.
@@ -23,13 +23,33 @@ class Node():
 
 class linkedList():
     """
-    Creates relationships between 'Node' objects to form a linked list, designates instance specific 'head' and 'rear' nodes.
+    Represents a linked list data structure.
 
-    Arguments:
-        valueList (list): A list of any number and type of values which will be converted into a linked list, order will be preserved.
+    Attributes:
+        head (Node): The first node in the linked list.
+
+        rear (Node): The last node in the linked list.
+
+
+    Methods:
+        __init__(self, valueList)
+
+        addNode(self, value)
+
+        removeNode(self, value)
+
+        removeAllNodes(self, value)
+
+        countNodes(node)
     """
 
     def __init__(self, valueList):
+        """
+        Creates relationships between 'Node' objects to form a linked list, designates instance specific 'head' and 'rear' nodes. 
+
+        Attributes:
+            valueList (list): A list of any number and type of values which will be converted into a linked list, order will be preserved.
+        """
 
         nodeList = []
 
@@ -156,6 +176,7 @@ class linkedList():
                 del del_node
 
 
+@staticmethod
 def countNodes(node):
     """
     Returns the number of nodes starting from a specified node to the end of that specific linked list. Does not required a linked list object, can be used on specifc sections
@@ -185,7 +206,7 @@ class binaryNode():
     """
     Very similar to a 'Node' object, but specifically created for binary trees. Holds a value and references to 2 other objects.
 
-    Arguments:
+    Attributes:
         value (no designated type): Can hold any date type, is the data held by the node.
 
         left (binaryNode): A refernce to another 'binaryNode' object, can be set to a None object if there is no such node to refer to.
@@ -193,8 +214,8 @@ class binaryNode():
         right (binaryNode): Identical to the 'left' argument, with the exception that it refers to a seperate node than 'left.'
         
     Notes:
-        As stated in the description, this class is nearly identical to the 'Node' object used for linked lists, with the exception that it's used for binary trees rather
-        than linked lists.
+        As stated in the description, this class is nearly identical to the 'Node' object used for linked lists, with the exception that it's used for binary trees
+        instead.
     """
 
     def __init__(self, value, left=None, right=None):
@@ -207,36 +228,44 @@ class binaryNode():
 
 class binaryTree():
     """
-    Creates the relationships between 'binaryNode' objects used to form a binary tree. Similar to the 'linkedList' class, but with greater complexity.
+    Represents a binary tree data strcuture.
 
-    RECURSIVE
-
-    Arguments:
-        treeArr (list): A list of values specifically formatted for the creation of a binary tree. Check the 'Notes' section of this docstring for details.
-
-        index (int): The index in the 'treeArr' list currently being anaylzed by the initalizer for the purpose of converting the stored data into a 'binaryNode'
-            object. The funtion will act as though the index being analyzed will become the root node if set to 0.
-
-    Notes:
-        The required formatting of the 'treeArr' argument mentioned above is specifically used to store binary tree data as a list. This formatting can be seen below:
-
-        [None, root, left, right, left.left, left.right, right.left, right.right]
-          0     1      2     3       4           5          6             7
-
-        This is a short example of the required format. Due to the way the list is formatted, the 0th index is occupied by a None object.
-
-        The value of the root node sits at index 1. From there, every node's left node is equal to its index multiplied by 2, while its right node is equal to its index
-        multiplied by 2 plus 1.
-
-        left, i * 2
-        right, i * 2 + 1
-
-        This concept explained in greater detail can be found in this video: https://www.youtube.com/watch?v=4nJZhcD0wRA&ab_channel=CppNuts
-
-        THIS VIDEO IS NOT MINE, show the creator some support
+    Attributes:
+        root (binaryNode): The root node of the binary tree.
     """
 
+
     def __init__(self, treeArr, index=0):
+        """
+        Creates the relationships between 'binaryNode' objects used to form a binary tree. Similar to the 'linkedList' class, but with greater complexity.
+        Represents a binary tree data strcuture.
+
+        RECURSIVE
+
+        Attributes:
+            treeArr (list): A list of values specifically formatted for the creation of a binary tree. Check the 'Notes' section of this docstring for details.
+
+            index (int): The index in the 'treeArr' list currently being anaylzed by the initalizer for the purpose of converting the stored data into a 'binaryNode'
+                object. The funtion will act as though the index being analyzed will become the root node if set to 0.
+
+        Notes:
+            The required formatting of the 'treeArr' argument mentioned above is specifically used to store binary tree data as a list. This formatting can be seen below:
+
+            [None, root, left, right, left.left, left.right, right.left, right.right]
+              0     1      2     3        4          5           6            7
+
+            This is a short example of the required format. Due to the way the list is formatted, the 0th index is occupied by a None object.
+
+            The value of the root node sits at index 1. From there, every node's left node is equal to its index multiplied by 2, while its right node is equal to its index
+            multiplied by 2 plus 1.
+
+            left, i * 2
+            right, i * 2 + 1
+
+            This concept explained in greater detail can be found in this video: https://www.youtube.com/watch?v=4nJZhcD0wRA&ab_channel=CppNuts
+
+            THIS VIDEO IS NOT MINE, show the creator some support.
+        """
 
         if index == 0:
 
