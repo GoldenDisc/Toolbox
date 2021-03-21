@@ -22,12 +22,12 @@ class stack:
         __next__(self)
 
     Notes:
-        This object is both iterable and its own iterator, as it contains both the "__iter__" and "__next__" methods.
+        This object is both iterable and its own iterator, as it contains both the "__iter__" and "__next__" methods and its "__iter__" method returns "self."
     """
 
     def __init__(self, arr=[]):
         """
-        Creates the attributes the class needs to function properly.
+        Creates the instance attributes the object needs to function properly.
 
         Arguments:
             arr (list, optional): The list of values to be stored in the stack, left empty by default.
@@ -86,10 +86,10 @@ class stack:
     
     def __next__(self):
         """
-        Iterates over the contents of the stack one at a time. 
+        Used to iterate over the contents of the stack. Returns and remembers one value at a time until the end of the stack is reached.
 
         Returns:
-            current (no desgnated type): The topmost value of the array.
+            current (no desgnated type): The topmost value of the array within the stack.
 
         Notes:
             Due to the nature of stack data structures, iterating over the stack from top to bottom also erases the contents of the stack, as the topmost value must be deleted
