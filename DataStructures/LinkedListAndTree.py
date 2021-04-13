@@ -30,7 +30,6 @@ class linkedList():
 
         rear (Node): The last node in the linked list.
 
-
     Methods:
         __init__(self, valueList)
 
@@ -47,7 +46,7 @@ class linkedList():
         """
         Creates relationships between 'Node' objects to form a linked list, designates instance specific 'head' and 'rear' nodes. 
 
-        Attributes:
+        Arguments:
             valueList (list): A list of any number and type of values which will be converted into a linked list, order will be preserved.
         """
 

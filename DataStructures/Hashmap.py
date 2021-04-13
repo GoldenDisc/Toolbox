@@ -1,11 +1,33 @@
 from LinkedListAndTree import Node
 
 
-def alph_int(char):
+def alphInt(char):
+    """
+    Returns the position of any letter within the alphabet.
+
+    Returns:
+        int: The position of any 'char' character within the alphabet. Ranges from 1 - 26.
+
+    Notes:
+        Yes, this docstring IS pointless, but consistency is important.
+    """
     return ord(char.lower()) - 96
 
 
-class hash_iter:
+class hashIter:
+    """
+    Acts as the iterator for the 'hasMap' class.
+
+    Attributes:
+        index (int): The index of the 'keys' list to be returned when the '__next__' method is called. Reset to 0 once iteration ends.
+
+        keys (list): A list of hash map keys from a 'hashMap' object.__base__
+
+    Methods:
+        __init__(self, keys)
+
+        __next__(self)
+    """
 
     def __init__(self, keys):
         self.index = 0
@@ -13,6 +35,15 @@ class hash_iter:
 
 
     def __next__(self):
+        """
+        Used to iterate over the contents of a hash map.
+
+        Returns:
+            current (str): The 'current' key during each cycle of iteration. 
+
+        Raises:
+            StopIteration: A 'StopIteration' exception is raised on the '.index' attribute has exceeded the length of the '.keys. list. '.index' is reset to 0.
+        """
         
         if self.index == len(self.keys):
 
@@ -26,9 +57,48 @@ class hash_iter:
 
             return current
 
-class hashmap:
+class hashMap:
+    """
+    Represents a hash map data structure. 
+    
+    Attributes:
+        keys (list): A list of every key in a hash map. Every key is automatically added as a string.
+
+        arr (list): A list of 'Node' objects. Each entry within is actually the head node of a linked list, storing either a tuble containing a key and it's paired value,
+            or a 'None' object. This useage of empty nodes is done in order to both allow each index to store several keys of the same value index as well as to more easily
+            have a list of a fixed size, as arrays in python have no preset sizes and empty spaces.
+
+        count (int): The number of entries present in the hash map. 
+
+    Methods:
+        __init__(self, arr, length)
+
+        hashFunc(self, key)
+
+        hashInsert(self, key, value)
+
+        hashSearch(self, key)
+
+        hashDelete(self, key)
+
+        __iter__(self)
+    """
     
     def __init__(self, arr=None, length=20):
+        """
+        Automatically creates the relationship between keys and values based on their position in a given list.
+
+        Arguments:
+            arr (list, optional): The list of values given in order to have relationships automatically drawn between its entires within the hash map. Every entry
+                at an even index within the list will automatically become a key within the hash map. Every key will be paired with the value at the index equal to 
+                its own plus 1. For example, the entry at position 6 of a given list would become a key, while the entry at position 7 would become its paired value.
+                The hash map will be left blank if no 'arr' argument is given.
+
+            length (int, optional): The number of entries the '.arr' attribute will have. The maximum index of the '.arr' attribute will be equal to this number minus 1.
+        
+        Raises:
+            Exception: In the event that the list given as the 'arr' argument has an odd number of entries, an exception is raised.
+        """
 
         self.keys = []
         self.arr = [Node(None) for x in range(length)]
@@ -38,7 +108,7 @@ class hashmap:
             self.count = 0
 
         elif len(arr) % 2 == 1:
-            raise Exception("The list given as an argument when creating a 'hashmap' object must contain an even number of objects.")
+            raise Exception("The list given as an argument when creating a 'hashMap' object must contain an even number of objects.")
 
         else:
 
@@ -48,7 +118,7 @@ class hashmap:
 
                 key = str(arr[num])
                 value = arr[num + 1]
-                index = (alph_int(key[0]) * alph_int(key[-1]) * len(key)) % length
+                index = (alphInt(key[0]) * alphInt(key[-1]) * len(key)) % length
 
                 self.keys.append(key)
 
@@ -72,13 +142,38 @@ class hashmap:
                     current_node.next = Node((key, value))
 
 
-    def hash_func(self, key):
-        return (alph_int(key[0]) * alph_int(key[-1]) * len(key)) % len(self.arr)
+    def hashFunc(self, key):
+        """
+        The hash function of this implementation of the hash map data structure.
+
+        Arguments:
+            key (str): The key to have an associated index created for.
+
+        Returns:
+            int: Returns an index equal to: 
+            
+            (the postition of the list letter in the key * the position of the last letter of the key * the length of the key) % the length of the '.arr' attribute
+
+            This will always produce an index ranging from 0 to the maximum index of the '.arr' attribute.
+        """
+        return (alphInt(key[0]) * alphInt(key[-1]) * len(key)) % len(self.arr)
 
 
-    def hash_insert(self, key, value):
+    def hashInsert(self, key, value):
+        """
+        Inserts a new entry into the hash map.
 
-        index = self.hash_func(key)
+        Arguments:
+            key (str): The key attached to the entry within the hash map.
+
+            value (no designated type): The value paired with the key.
+
+        Notes:
+            When a new entry is made using a previously existed key, the new entry overwrites the pre-existing entry. In the event of a collision between key's indexes, 
+                the new entry is appended to the end of the linked list at that specific index.
+        """
+
+        index = self.hashFunc(key)
 
         if self.arr[index].value == None:
             self.arr[index] = Node((key, value))
@@ -104,9 +199,9 @@ class hashmap:
             self.count = len(self.keys)
 
 
-    def hash_search(self, key):
+    def hashSearch(self, key):
 
-        index = self.hash_func(key)
+        index = self.hashFunc(key)
 
         try:
 
@@ -123,12 +218,12 @@ class hashmap:
                 return current_node.value[1]
 
         except ValueError or TypeError:
-            raise Exception("Provided key has no paired value within 'hashmap' object.")
+            raise Exception("Provided key has no paired value within 'hashMap' object.")
 
 
-    def hash_delete(self, key):
+    def hashDelete(self, key):
         
-        index = self.hash_func(key)
+        index = self.hashFunc(key)
 
         try:
             self.keys.remove(key)
@@ -147,11 +242,23 @@ class hashmap:
                 current_node.next = None
         
         except ValueError or TypeError:
-            raise Exception("Provided key has no paired value within 'hashmap' object.")
+            raise Exception("Provided key has no paired value within 'hashMap' object.")
 
 
     def __iter__(self):
-        return hash_iter(self.keys)
+        return hashIter(self.keys)
+
+name_list = []
+
+f = open("names.txt", "r")
+
+for name in f.read():
+    name_list.append(name)
+
+f.close()
 
 
-test = hashmap(range(20))
+names = hashMap(name_list)
+
+for entry in names.arr:
+    print(entry.value)
