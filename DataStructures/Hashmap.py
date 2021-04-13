@@ -247,18 +247,3 @@ class hashMap:
 
     def __iter__(self):
         return hashIter(self.keys)
-
-name_list = []
-
-f = open("names.txt", "r")
-
-for name in f.read():
-    name_list.append(name)
-
-f.close()
-
-
-names = hashMap(name_list)
-
-for entry in names.arr:
-    print(entry.value)
