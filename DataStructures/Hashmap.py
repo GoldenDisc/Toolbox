@@ -200,6 +200,18 @@ class hashMap:
 
 
     def hashSearch(self, key):
+        """
+        Returns the valued paired with a specific key within the hash map.
+
+        Arguments:
+            key (str): The key to have its contents returned.
+
+        Returns:
+            (no designated type): The data stored within the hash map alongside the key.
+
+        Raises:
+            Exception: In the event that the given 'key' argument matches no key within the hash map, an exception is raised.
+        """
 
         index = self.hashFunc(key)
 
@@ -222,6 +234,15 @@ class hashMap:
 
 
     def hashDelete(self, key):
+        """
+        Deletes an entry within the hash map.
+
+        Arguments:
+            key (str): The key to the entry to be deleted. Both the key and paired value of the entry will be wiped.
+
+        Raises:
+            Exception: In the event that the given 'key' argument matches no key within the hash map, an exception is raised.
+        """
         
         index = self.hashFunc(key)
 
@@ -246,4 +267,10 @@ class hashMap:
 
 
     def __iter__(self):
+        """
+        Returns a 'hashIter' object containing the details of the specific hash map calling this method.
+
+        Returns:
+            hashIter: The iterator of this hash map object. The iterator is passed all the necessary details through arguments. Only the keys of the hash map are looped over.
+        """
         return hashIter(self.keys)
