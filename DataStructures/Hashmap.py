@@ -118,7 +118,7 @@ class hashMap:
 
                 key = str(arr[num])
                 value = arr[num + 1]
-                index = (alphInt(key[0]) * alphInt(key[-1]) * len(key)) % length
+                index = hash(key) % length
 
                 self.keys.append(key)
 
@@ -142,23 +142,6 @@ class hashMap:
                     current_node.next = Node((key, value))
 
 
-    def hashFunc(self, key):
-        """
-        The hash function of this implementation of the hash map data structure.
-
-        Arguments:
-            key (str): The key to have an associated index created for.
-
-        Returns:
-            int: Returns an index equal to: 
-            
-            (the postition of the list letter in the key * the position of the last letter of the key * the length of the key) % the length of the '.arr' attribute
-
-            This will always produce an index ranging from 0 to the maximum index of the '.arr' attribute.
-        """
-        return (alphInt(key[0]) * alphInt(key[-1]) * len(key)) % len(self.arr)
-
-
     def hashInsert(self, key, value):
         """
         Inserts a new entry into the hash map.
@@ -173,7 +156,7 @@ class hashMap:
                 the new entry is appended to the end of the linked list at that specific index.
         """
 
-        index = self.hashFunc(key)
+        index = hash(key) % len(self.arr)
 
         if self.arr[index].value == None:
             self.arr[index] = Node((key, value))
@@ -213,7 +196,7 @@ class hashMap:
             Exception: In the event that the given 'key' argument matches no key within the hash map, an exception is raised.
         """
 
-        index = self.hashFunc(key)
+        index = hash(key) % len(self.arr)
 
         try:
 
@@ -244,7 +227,7 @@ class hashMap:
             Exception: In the event that the given 'key' argument matches no key within the hash map, an exception is raised.
         """
         
-        index = self.hashFunc(key)
+        index = hash(key) % len(self.arr)
 
         try:
             self.keys.remove(key)
